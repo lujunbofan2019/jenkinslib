@@ -433,7 +433,7 @@ jenkins:
           workingDir: "/home/jenkins/agent"
         - args: "cat"
           command: "/bin/sh -c"
-          image: "stoplight/spectral:5.3.0"
+          image: "stoplight/spectral:develop"
           name: "spectral"
           ttyEnabled: true
           workingDir: "/home/jenkins/agent"
@@ -1612,7 +1612,7 @@ jenkins:
           workingDir: "/home/jenkins/agent"
         - args: "cat"
           command: "/bin/sh -c"
-          image: "stoplight/spectral:5.3.0"
+          image: "stoplight/spectral:develop"
           name: "spectral"
           ttyEnabled: true
           workingDir: "/home/jenkins/agent"
