@@ -1627,10 +1627,10 @@ jenkins:
             key: "GIT_AUTHOR_NAME"
             value: "jenkins-x-bot"
         - envVar:
-            key: "GIT_COMMITER_EMAIL"
+            key: "GIT_COMMITTER_EMAIL"
             value: "jenkins-x@googlegroups.com"
         - envVar:
-            key: "GIT_COMMITER_NAME"
+            key: "GIT_COMMITTER_NAME"
             value: "jenkins-x-bot"
         - envVar:
             key: "JENKINS_URL"
