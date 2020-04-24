@@ -1709,8 +1709,6 @@ unclassified:
         manageHooks: false
         repositoriesCacheDuration: 0
         teamCacheDuration: 0
-  contentFilters:
-    enabled: false
   gitHubPluginConfig:
     hookUrl: "http://jenkins.y-tree.xyz/github-webhook/"
   gitSCM:
