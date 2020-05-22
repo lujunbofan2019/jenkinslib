@@ -430,7 +430,7 @@ jenkins:
           image: "gcr.io/jenkinsxio/builder-maven:2.0.1007-338"
           name: "maven"
           privileged: true
-          resourceLimitCpu: "1"
+          resourceLimitCpu: "800m"
           resourceLimitMemory: "1024Mi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
@@ -1648,7 +1648,7 @@ jenkins:
             value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
               \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
               \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
-              \ -Xms10m -Xmx192m"
+              \ -Xms512m -Xmx1g"
         label: "jenkins-gradle5"
         name: "jenkins-gradle5"
         serviceAccount: "jenkins"
@@ -1673,8 +1673,8 @@ jenkins:
           command: "/bin/sh -c"
           image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1085-419"
           name: "gradle5"
-          resourceLimitCpu: "400m"
-          resourceLimitMemory: "1Gi"
+          resourceLimitCpu: "800m"
+          resourceLimitMemory: "2Gi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "1Gi"
           ttyEnabled: true
@@ -1712,7 +1712,7 @@ jenkins:
             value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
               \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
               \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
-              \ -Xms512m -Xmx1g"
+              \ -Xms512m -Xmx2g"
         label: "jenkins-gradle5-xl"
         name: "jenkins-gradle5-xl"
         serviceAccount: "jenkins"
