@@ -1685,10 +1685,6 @@ jenkins:
           resourceRequestCpu: "100m"
           resourceRequestMemory: "128Mi"
           workingDir: "/home/jenkins/agent"
-        - envVars:
-          - envVar:
-              key: "POSTGRES_PASSWORD"
-              value: "password"
         envVars:
         - containerEnvVar:
             key: "DOCKER_CONFIG"
@@ -1717,8 +1713,8 @@ jenkins:
               \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
               \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
               \ -Xms512m -Xmx1g"
-        label: "jenkins-gradle5-1g"
-        name: "jenkins-gradle5-1g"
+        label: "jenkins-gradle5-xl"
+        name: "jenkins-gradle5-xl"
         serviceAccount: "jenkins"
         slaveConnectTimeoutStr: "0"
         volumes:
@@ -1734,7 +1730,7 @@ jenkins:
         - secretVolume:
             mountPath: "/root/gradle_user_home"
             secretName: "jenkins-gradle-properties"
-        yamlMergeStrategy: "override"        
+        yamlMergeStrategy: "override"       
         
   disableRememberMe: false
   globalNodeProperties:
