@@ -1674,9 +1674,9 @@ jenkins:
           image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1085-419"
           name: "gradle5"
           resourceLimitCpu: "800m"
-          resourceLimitMemory: "2Gi"
+          resourceLimitMemory: "1Gi"
           resourceRequestCpu: "400m"
-          resourceRequestMemory: "1Gi"
+          resourceRequestMemory: "512Mi"
           ttyEnabled: true
           workingDir: "/home/jenkins/agent"
         - args: "^${computer.jnlpmac} ^${computer.name}"
@@ -1712,7 +1712,7 @@ jenkins:
             value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
               \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
               \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
-              \ -Xms512m -Xmx2g"
+              \ -Xms512m -Xmx1g"
         label: "jenkins-gradle5-xl"
         name: "jenkins-gradle5-xl"
         serviceAccount: "jenkins"
