@@ -890,7 +890,7 @@ jenkins:
         - secretEnvVar:
             key: "REACT_APP_CAS_BASE_URL"
             secretName: "fe-secret"
-            secretKey: "BASE_URL"
+            secretKey: "CAS_BASE_URL"
         - secretEnvVar:
             key: "REACT_APP_WS_URL"
             secretName: "fe-secret"
