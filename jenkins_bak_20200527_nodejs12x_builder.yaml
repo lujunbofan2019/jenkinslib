@@ -883,26 +883,26 @@ jenkins:
         - containerEnvVar:
             key: "XDG_CONFIG_HOME"
             value: "/home/jenkins"
-        - secretEnvVar:
-            key: "REACT_APP_BAPI_URL"
-            secretName: "fe-secret"
-            secretKey: "BAPI_URL"
-        - secretEnvVar:
-            key: "REACT_APP_CAS_BASE_URL"
-            secretName: "fe-secret"
-            secretKey: "CAS_BASE_URL"
-        - secretEnvVar:
-            key: "REACT_APP_WS_URL"
-            secretName: "fe-secret"
-            secretKey: "WS_URL"
-        - secretEnvVar:
-            key: "REACT_APP_FS_URL"
-            secretName: "fe-secret"
-            secretKey: "FS_URL"
-        - secretEnvVar:
-            key: "REACT_APP_DOMAIN"
-            secretName: "fe-secret"
-            secretKey: "DOMAIN"            
+#        - secretEnvVar:
+#            key: "REACT_APP_BAPI_URL"
+#            secretName: "fe-secret"
+#            secretKey: "BAPI_URL"
+#        - secretEnvVar:
+#            key: "REACT_APP_CAS_BASE_URL"
+#            secretName: "fe-secret"
+#            secretKey: "CAS_BASE_URL"
+#        - secretEnvVar:
+#            key: "REACT_APP_WS_URL"
+#            secretName: "fe-secret"
+#            secretKey: "WS_URL"
+#        - secretEnvVar:
+#            key: "REACT_APP_FS_URL"
+#            secretName: "fe-secret"
+#            secretKey: "FS_URL"
+#        - secretEnvVar:
+#            key: "REACT_APP_DOMAIN"
+#            secretName: "fe-secret"
+#            secretKey: "DOMAIN"            
         label: "jenkins-nodejs12x"
         name: "nodejs12x"
         serviceAccount: "jenkins"
@@ -914,6 +914,9 @@ jenkins:
         - secretVolume:
             mountPath: "/home/jenkins/.docker"
             secretName: "jenkins-docker-cfg"
+        - secretVolume:
+            mountPath: "/home/config.js"
+            secretName: "fe-secret"    
         yamlMergeStrategy: "override"
         
       - containers:
