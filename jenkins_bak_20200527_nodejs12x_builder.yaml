@@ -916,7 +916,10 @@ jenkins:
             secretName: "jenkins-docker-cfg"
         - secretVolume:
             mountPath: "/home/fe-secret"
-            secretName: "fe-secret"    
+            secretName: "fe-secret"
+        - secretVolume:
+            mountPath: "/home/env-secret"
+            secretName: "env-secret"            
         yamlMergeStrategy: "override"
         
       - containers:
