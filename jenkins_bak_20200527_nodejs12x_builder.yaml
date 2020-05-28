@@ -915,7 +915,7 @@ jenkins:
             mountPath: "/home/jenkins/.docker"
             secretName: "jenkins-docker-cfg"
         - secretVolume:
-            mountPath: "/home/config.js"
+            mountPath: "/home"
             secretName: "fe-secret"    
         yamlMergeStrategy: "override"
         
