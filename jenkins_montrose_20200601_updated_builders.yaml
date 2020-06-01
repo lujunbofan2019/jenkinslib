@@ -973,6 +973,7 @@ jenkins:
             mountPath: "/home/jenkins/.docker"
             secretName: "jenkins-docker-cfg"
         yamlMergeStrategy: "override"
+
       - containers:
         - args: "cat"
           command: "/bin/sh -c"
@@ -983,18 +984,15 @@ jenkins:
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
-          workingDir: "/home/jenkins"
+          workingDir: "/home/jenkins/agent"
         - args: "^${computer.jnlpmac} ^${computer.name}"
-          command: "/bin/sh -c"
           image: "jenkinsci/jnlp-slave:3.26-1-alpine"
           name: "jnlp"
           resourceRequestCpu: "100m"
           resourceRequestMemory: "128Mi"
-          workingDir: "/home/jenkins"
-        - args: "cat"
-          command: "/bin/sh -c"
-          envVars:
-          - containerEnvVar:
+          workingDir: "/home/jenkins/agent"
+        - envVars:
+          - envVar:
               key: "POSTGRES_PASSWORD"
               value: "password"
           image: "lujunbofan/pg12-jdk8:1.0"
@@ -1003,27 +1001,20 @@ jenkins:
           resourceLimitMemory: "512Mi"
           resourceRequestCpu: "200m"
           resourceRequestMemory: "256Mi"
-          workingDir: "/home/jenkins"
-        - args: "cat"
-          command: "/bin/sh -c"
-          image: "redis:5.0.7-buster"
+          workingDir: "/home/jenkins/agent"
+        - image: "redis:5.0.7-buster"
           name: "redis5"
           resourceLimitCpu: "400m"
           resourceLimitMemory: "512Mi"
           resourceRequestCpu: "200m"
           resourceRequestMemory: "256Mi"
-          ttyEnabled: true
-          workingDir: "/home/jenkins"
+          workingDir: "/home/jenkins/agent"
         - args: "cat"
           command: "/bin/sh -c"
           image: "stoplight/spectral:develop"
           name: "spectral"
-          resourceLimitCpu: "400m"
-          resourceLimitMemory: "512Mi"
-          resourceRequestCpu: "200m"
-          resourceRequestMemory: "256Mi"
           ttyEnabled: true
-          workingDir: "/home/jenkins"
+          workingDir: "/home/jenkins/agent"
         envVars:
         - containerEnvVar:
             key: "DOCKER_CONFIG"
@@ -1070,6 +1061,7 @@ jenkins:
             mountPath: "/root/gradle_user_home"
             secretName: "jenkins-gradle-properties"
         yamlMergeStrategy: "override"
+
       - containers:
         - args: "cat"
           command: "/bin/sh -c"
@@ -1135,6 +1127,7 @@ jenkins:
             mountPath: "/root/gradle_user_home"
             secretName: "jenkins-gradle-properties"
         yamlMergeStrategy: "override"
+        
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: true
@@ -1181,7 +1174,7 @@ jenkins:
   securityRealm:
     github:
       clientID: "f28e1adcb71ccac27349"
-      clientSecret: "{AQAAABAAAAAw2mkxSsShKX8xIv8k1T9cY4NmsEN5a4wRbWXplFm8m4gxaABhqnzWKzJiWqZQ1VBgf/mPdpKPxgqJG1PtEWm10g==}"
+      clientSecret: "{AQAAABAAAAAwFNuoV3aU2N76Vg6VIpJtRLWAY9ZCnRG/7dXxqn/Wvqi4IXn/jaq+42Qjmm+GOgsYsCg1mhVTIxrSur7ZI4Ggiw==}"
       githubApiUri: "https://api.github.com"
       githubWebUri: "https://github.com"
       oauthScopes: "read:org"
