@@ -1061,13 +1061,13 @@ jenkins:
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
-          workingDir: "/home/jenkins/agent"
+          workingDir: "/home/jenkins"
         - args: "^${computer.jnlpmac} ^${computer.name}"
           image: "jenkinsci/jnlp-slave:3.26-1-alpine"
           name: "jnlp"
           resourceRequestCpu: "100m"
           resourceRequestMemory: "128Mi"
-          workingDir: "/home/jenkins/agent"
+          workingDir: "/home/jenkins"
         envVars:
         - containerEnvVar:
             key: "DOCKER_CONFIG"
@@ -1110,9 +1110,6 @@ jenkins:
         - secretVolume:
             mountPath: "/home/jenkins/.gnupg"
             secretName: "jenkins-release-gpg"
-        - secretVolume:
-            mountPath: "/root/gradle_user_home"
-            secretName: "jenkins-gradle-properties"
         yamlMergeStrategy: "override"        
 
   crumbIssuer:
