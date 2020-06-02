@@ -1061,15 +1061,13 @@ jenkins:
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
-          workingDir: "/home/jenkins"
+          workingDir: "/home/jenkins/agent"
         - args: "^${computer.jnlpmac} ^${computer.name}"
-          command: "/bin/sh -c"
           image: "jenkinsci/jnlp-slave:3.26-1-alpine"
           name: "jnlp"
           resourceRequestCpu: "100m"
           resourceRequestMemory: "128Mi"
-          ttyEnabled: true
-          workingDir: "/home/jenkins"
+          workingDir: "/home/jenkins/agent"
         envVars:
         - containerEnvVar:
             key: "DOCKER_CONFIG"
