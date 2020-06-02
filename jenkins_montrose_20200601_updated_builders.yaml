@@ -1054,7 +1054,7 @@ jenkins:
       - containers:
         - args: "cat"
           command: "/bin/sh -c"
-          image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1085-419"
+          image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1258-597"
           name: "gradle5"
           resourceLimitCpu: "800m"
           resourceLimitMemory: "2Gi"
@@ -1110,6 +1110,9 @@ jenkins:
         - secretVolume:
             mountPath: "/home/jenkins/.gnupg"
             secretName: "jenkins-release-gpg"
+        - secretVolume:
+            mountPath: "/root/gradle_user_home"
+            secretName: "jenkins-gradle-properties"
         yamlMergeStrategy: "override"        
 
   crumbIssuer:
