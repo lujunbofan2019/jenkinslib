@@ -92,7 +92,7 @@ jenkins:
         label: "jenkins-aws-cdk"
         name: "aws-cdk"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -150,7 +150,7 @@ jenkins:
         label: "jenkins-dotnet"
         name: "dotnet"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -202,7 +202,7 @@ jenkins:
         label: "jenkins-go"
         name: "go"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -260,7 +260,7 @@ jenkins:
         label: "jenkins-gradle"
         name: "gradle"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -315,7 +315,7 @@ jenkins:
         label: "jenkins-jx-base"
         name: "jx-base"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -386,7 +386,7 @@ jenkins:
         label: "jenkins-maven"
         name: "maven"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -452,7 +452,7 @@ jenkins:
         label: "jenkins-maven-graalvm"
         name: "maven-graalvm"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -518,7 +518,7 @@ jenkins:
         label: "jenkins-maven-java11"
         name: "maven-java11"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -581,7 +581,7 @@ jenkins:
         label: "jenkins-maven-nodejs"
         name: "maven-nodejs"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -639,7 +639,7 @@ jenkins:
         label: "jenkins-nodejs12x"
         name: "nodejs12x"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -682,7 +682,7 @@ jenkins:
         label: "jenkins-packer"
         name: "packer"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -734,7 +734,7 @@ jenkins:
         label: "jenkins-promote"
         name: "promote"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -796,7 +796,7 @@ jenkins:
         label: "jenkins-python37"
         name: "python37"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -854,7 +854,7 @@ jenkins:
         label: "jenkins-scala"
         name: "scala"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -912,7 +912,7 @@ jenkins:
         label: "jenkins-swift"
         name: "swift"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -964,7 +964,7 @@ jenkins:
         label: "jenkins-terraform"
         name: "terraform"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -1035,7 +1035,7 @@ jenkins:
         label: "jenkins-gradle5"
         name: "jenkins-gradle5"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
@@ -1100,7 +1100,7 @@ jenkins:
         label: "jenkins-gradle5-xl"
         name: "jenkins-gradle5-xl"
         serviceAccount: "jenkins"
-        slaveConnectTimeoutStr: "0"
+        slaveConnectTimeoutStr: "1000"
         volumes:
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
