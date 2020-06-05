@@ -691,6 +691,12 @@ jenkins:
         yamlMergeStrategy: "override"
 
       - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
         - args: "cat"
           command: "/bin/sh -c"
           image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1258-597"
@@ -700,12 +706,6 @@ jenkins:
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
-          workingDir: "/home/jenkins"
-        - args: "^${computer.jnlpmac} ^${computer.name}"
-          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
-          name: "jnlp"
-          resourceRequestCpu: "100m"
-          resourceRequestMemory: "128Mi"
           workingDir: "/home/jenkins"
         - image: "redis:5.0.7-buster"
           name: "redis5"
