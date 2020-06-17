@@ -111,7 +111,7 @@ jenkins:
           name: "maven"
           privileged: true
           resourceLimitCpu: "1"
-          resourceLimitMemory: "1024Mi"
+          resourceLimitMemory: "2Gi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
@@ -156,7 +156,7 @@ jenkins:
             value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
               \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
               \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
-              \ -Xms10m -Xmx192m"
+              \ -Xms256m -Xmx2g"
         label: "jenkins-maven"
         name: "maven"
         serviceAccount: "jenkins"
@@ -189,7 +189,7 @@ jenkins:
           name: "maven"
           privileged: true
           resourceLimitCpu: "1"
-          resourceLimitMemory: "3Gi"
+          resourceLimitMemory: "4Gi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "2Gi"
           ttyEnabled: true
@@ -223,7 +223,7 @@ jenkins:
             key: "_JAVA_OPTIONS"
             value: "-XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true\
               \ -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10\
-              \ -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx1800m"
+              \ -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms256m -Xmx4g"
         label: "jenkins-maven-graalvm"
         name: "maven-graalvm"
         serviceAccount: "jenkins"
@@ -256,7 +256,7 @@ jenkins:
           name: "maven"
           privileged: true
           resourceLimitCpu: "1"
-          resourceLimitMemory: "1024Mi"
+          resourceLimitMemory: "2Gi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
@@ -290,7 +290,7 @@ jenkins:
             key: "_JAVA_OPTIONS"
             value: "-XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true\
               \ -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10\
-              \ -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m"
+              \ -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms256m -Xmx2g"
         label: "jenkins-maven-java11"
         name: "maven-java11"
         serviceAccount: "jenkins"
@@ -322,8 +322,8 @@ jenkins:
           image: "gcr.io/jenkinsxio/builder-nodejs12x:2.0.1258-597"
           name: "nodejs"
           privileged: true
-          resourceLimitCpu: "1"
-          resourceLimitMemory: "4Gi"
+          resourceLimitCpu: "2"
+          resourceLimitMemory: "8Gi"
           resourceRequestCpu: "1"
           resourceRequestMemory: "4Gi"
           ttyEnabled: true
@@ -362,6 +362,7 @@ jenkins:
             mountPath: "/home/jenkins/.docker"
             secretName: "jenkins-docker-cfg"
         yamlMergeStrategy: "override"
+      
       - containers:
         - args: "cat"
           command: "/bin/sh -c"
@@ -472,7 +473,7 @@ jenkins:
           name: "python"
           privileged: true
           resourceLimitCpu: "1"
-          resourceLimitMemory: "2048Mi"
+          resourceLimitMemory: "2Gi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
@@ -535,7 +536,7 @@ jenkins:
           name: "swift"
           privileged: true
           resourceLimitCpu: "1"
-          resourceLimitMemory: "2048Mi"
+          resourceLimitMemory: "4Gi"
           resourceRequestCpu: "400m"
           resourceRequestMemory: "512Mi"
           ttyEnabled: true
@@ -639,10 +640,10 @@ jenkins:
           command: "/bin/sh -c"
           image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1258-597"
           name: "gradle5"
-          resourceLimitCpu: "1"
+          resourceLimitCpu: "2"
           resourceLimitMemory: "4Gi"
-          resourceRequestCpu: "500m"
-          resourceRequestMemory: "1Gi"
+          resourceRequestCpu: "1"
+          resourceRequestMemory: "2Gi"
           ttyEnabled: true
           workingDir: "/home/jenkins"
         envVars:
@@ -711,10 +712,10 @@ jenkins:
           command: "/bin/sh -c"
           image: "lujunbofan/jenkins-gradle6-xl:6.5"
           name: "gradle6"
-          resourceLimitCpu: "1"
+          resourceLimitCpu: "2"
           resourceLimitMemory: "4Gi"
-          resourceRequestCpu: "500m"
-          resourceRequestMemory: "1Gi"
+          resourceRequestCpu: "1"
+          resourceRequestMemory: "2Gi"
           ttyEnabled: true
           workingDir: "/home/jenkins"
         envVars:
