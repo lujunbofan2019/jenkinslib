@@ -1,0 +1,953 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          id: "https://github.com"
+          password: "{AQAAABAAAAAwjN4KcHTYaIVzP+YcmhBkxniDb2mEbIPIeIbH6DQSTkYTZ+mNvmzsMW/LUwzUdN2/lZLliQEzfOf4TTU71lbs2A==}"
+          scope: GLOBAL
+          username: "ytree-admin"
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+      - "Credentials/Create:authenticated"
+      - "Credentials/ManageDomains:authenticated"
+      - "Credentials/Update:authenticated"
+      - "Credentials/View:authenticated"
+      - "Job/Build:authenticated"
+      - "Job/Cancel:authenticated"
+      - "Job/Configure:authenticated"
+      - "Job/Create:authenticated"
+      - "Job/Delete:authenticated"
+      - "Job/Discover:authenticated"
+      - "Job/Read:authenticated"
+      - "Job/Workspace:authenticated"
+      - "Overall/Administer:admin"
+      - "Overall/Administer:lujunbofan2019"
+      - "Overall/Administer:ytree-admin"
+      - "Overall/Administer:zakswindow"
+      - "Overall/Read:authenticated"
+      - "View/Read:authenticated"
+  clouds:
+  - kubernetes:
+      containerCap: 0
+      containerCapStr: "0"
+      jenkinsTunnel: "jenkins-agent:50000"
+      jenkinsUrl: "http://jenkins:8080"
+      maxRequestsPerHost: 32
+      maxRequestsPerHostStr: "32"
+      name: "kubernetes"
+      namespace: "jx"
+      serverUrl: "https://kubernetes.default"
+      templates:
+      
+      - containers:
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-jx:2.0.1258-597"
+          name: "jx-base"
+          privileged: true
+          resourceLimitCpu: "400m"
+          resourceLimitMemory: "512Mi"
+          resourceRequestCpu: "200m"
+          resourceRequestMemory: "256Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-jx-base"
+        name: "jx-base"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-maven:2.0.1258-597"
+          name: "maven"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "1024Mi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "512Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "stoplight/spectral:develop"
+          name: "spectral"
+          resourceLimitCpu: "400m"
+          resourceLimitMemory: "512Mi"
+          resourceRequestCpu: "200m"
+          resourceRequestMemory: "256Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "MAVEN_OPTS"
+            value: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        - containerEnvVar:
+            key: "_JAVA_OPTIONS"
+            value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
+              \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
+              \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
+              \ -Xms10m -Xmx192m"
+        label: "jenkins-maven"
+        name: "maven"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/root/.m2/"
+            secretName: "jenkins-maven-settings"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        - secretVolume:
+            mountPath: "/home/jenkins/.gnupg"
+            secretName: "jenkins-release-gpg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-maven-graalvm:0.1.560"
+          name: "maven"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "3Gi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "2Gi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "MAVEN_OPTS"
+            value: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        - containerEnvVar:
+            key: "_JAVA_OPTIONS"
+            value: "-XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true\
+              \ -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10\
+              \ -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx1800m"
+        label: "jenkins-maven-graalvm"
+        name: "maven-graalvm"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/root/.m2/"
+            secretName: "jenkins-maven-settings"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        - secretVolume:
+            mountPath: "/home/jenkins/.gnupg"
+            secretName: "jenkins-release-gpg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-maven-java11:2.0.1258-597"
+          name: "maven"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "1024Mi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "512Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "MAVEN_OPTS"
+            value: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        - containerEnvVar:
+            key: "_JAVA_OPTIONS"
+            value: "-XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true\
+              \ -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10\
+              \ -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m"
+        label: "jenkins-maven-java11"
+        name: "maven-java11"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/root/.m2/"
+            secretName: "jenkins-maven-settings"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        - secretVolume:
+            mountPath: "/home/jenkins/.gnupg"
+            secretName: "jenkins-release-gpg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-nodejs12x:2.0.1258-597"
+          name: "nodejs"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "4Gi"
+          resourceRequestCpu: "1"
+          resourceRequestMemory: "4Gi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-nodejs12x"
+        name: "nodejs12x"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+      - containers:
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "hashicorp/packer:1.4.1"
+          name: "packer"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-packer"
+        name: "packer"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-jx:2.0.1258-597"
+          name: "promote"
+          privileged: true
+          resourceLimitCpu: "400m"
+          resourceLimitMemory: "200Mi"
+          resourceRequestCpu: "200m"
+          resourceRequestMemory: "100Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-promote"
+        name: "promote"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-python37:2.0.1258-597"
+          name: "python"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "2048Mi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "512Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "pbount/python-postgres"
+          name: "pythonpg"
+          resourceLimitCpu: "800m"
+          resourceLimitMemory: "1Gi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "512Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-python37"
+        name: "python37"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-swift:2.0.1258-597"
+          name: "swift"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "2048Mi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "512Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-swift"
+        name: "swift"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-terraform:2.0.1258-597"
+          name: "terraform"
+          privileged: true
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "1448Mi"
+          resourceRequestCpu: "400m"
+          resourceRequestMemory: "600Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        label: "jenkins-terraform"
+        name: "terraform"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "gcr.io/jenkinsxio/builder-gradle5:2.0.1258-597"
+          name: "gradle5"
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "4Gi"
+          resourceRequestCpu: "500m"
+          resourceRequestMemory: "1Gi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        - containerEnvVar:
+            key: "_JAVA_OPTIONS"
+            value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
+              \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
+              \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
+              \ -Xms512m -Xmx4g"
+        label: "jenkins-gradle5-xl"
+        name: "jenkins-gradle5-xl"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        - secretVolume:
+            mountPath: "/home/jenkins/.gnupg"
+            secretName: "jenkins-release-gpg"
+        - secretVolume:
+            mountPath: "/root/gradle_user_home"
+            secretName: "jenkins-gradle-properties"
+        yamlMergeStrategy: "override"
+
+      - containers:
+        - args: "^${computer.jnlpmac} ^${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.26-1-alpine"
+          name: "jnlp"
+          resourceRequestCpu: "100m"
+          resourceRequestMemory: "128Mi"
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "stoplight/spectral:develop"
+          name: "spectral"
+          resourceRequestCpu: "200m"
+          resourceRequestMemory: "256Mi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "lujunbofan/jenkins-gradle6-xl:6.5"
+          name: "gradle6"
+          resourceLimitCpu: "1"
+          resourceLimitMemory: "4Gi"
+          resourceRequestCpu: "500m"
+          resourceRequestMemory: "1Gi"
+          ttyEnabled: true
+          workingDir: "/home/jenkins"
+        envVars:
+        - containerEnvVar:
+            key: "DOCKER_CONFIG"
+            value: "/home/jenkins/.docker/"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_AUTHOR_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_EMAIL"
+            value: "jenkins-x@googlegroups.com"
+        - containerEnvVar:
+            key: "GIT_COMMITTER_NAME"
+            value: "jenkins-x-bot"
+        - containerEnvVar:
+            key: "JENKINS_URL"
+            value: "http://jenkins:8080"
+        - containerEnvVar:
+            key: "XDG_CONFIG_HOME"
+            value: "/home/jenkins"
+        - containerEnvVar:
+            key: "_JAVA_OPTIONS"
+            value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
+              \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
+              \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
+              \ -Xms512m -Xmx4g"
+        label: "jenkins-gradle6-xl"
+        name: "jenkins-gradle6-xl"
+        serviceAccount: "jenkins"
+        slaveConnectTimeoutStr: "1000"
+        volumes:
+        - persistentVolumeClaim:
+            claimName: "gradle-builder"
+            mountPath: "/opt/gradle/caches"
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        - secretVolume:
+            mountPath: "/home/jenkins/.docker"
+            secretName: "jenkins-docker-cfg"
+        - secretVolume:
+            mountPath: "/home/jenkins/.gnupg"
+            secretName: "jenkins-release-gpg"
+        - secretVolume:
+            mountPath: "/root/gradle_user_home"
+            secretName: "jenkins-gradle-properties"
+        yamlMergeStrategy: "override"
+        
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: "DOCKER_REGISTRY"
+        value: "986794016656.dkr.ecr.eu-west-2.amazonaws.com"
+      - key: "TILLER_NAMESPACE"
+        value: "kube-system"
+  labelAtoms:
+  - name: "jenkins-gradle5-xl"
+  - name: "jenkins-gradle6-xl"
+  - name: "jenkins-jx-base"
+  - name: "jenkins-maven"
+  - name: "jenkins-maven-graalvm"
+  - name: "jenkins-maven-java11"
+  - name: "jenkins-nodejs12x"
+  - name: "jenkins-packer"
+  - name: "jenkins-promote"
+  - name: "jenkins-python37"
+  - name: "jenkins-swift"
+  - name: "jenkins-terraform"
+  - name: "master"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  noUsageStatistics: true
+  numExecutors: 0
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    github:
+      clientID: "f28e1adcb71ccac27349"
+      clientSecret: "{AQAAABAAAAAwFNuoV3aU2N76Vg6VIpJtRLWAY9ZCnRG/7dXxqn/Wvqi4IXn/jaq+42Qjmm+GOgsYsCg1mhVTIxrSur7ZI4Ggiw==}"
+      githubApiUri: "https://api.github.com"
+      githubWebUri: "https://github.com"
+      oauthScopes: "read:org"
+  slaveAgentPort: 50000
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  anonymizeSupportBundle:
+    enabled: false
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  sSHD:
+    port: -1
+unclassified:
+  ansiColorBuildWrapper:
+    colorMaps:
+    - black: "#000000"
+      blackB: "#4C4C4C"
+      blue: "#1E90FF"
+      blueB: "#4682B4"
+      cyan: "#00CDCD"
+      cyanB: "#00FFFF"
+      green: "#00CD00"
+      greenB: "#00FF00"
+      magenta: "#CD00CD"
+      magentaB: "#FF00FF"
+      name: "xterm"
+      red: "#CD0000"
+      redB: "#FF0000"
+      white: "#E5E5E5"
+      whiteB: "#FFFFFF"
+      yellow: "#CDCD00"
+      yellowB: "#FFFF00"
+    - black: "#000000"
+      blackB: "#555555"
+      blue: "#0000AA"
+      blueB: "#5555FF"
+      cyan: "#00AAAA"
+      cyanB: "#55FFFF"
+      defaultBackground: 0
+      defaultForeground: 7
+      green: "#00AA00"
+      greenB: "#55FF55"
+      magenta: "#AA00AA"
+      magentaB: "#FF55FF"
+      name: "vga"
+      red: "#AA0000"
+      redB: "#FF5555"
+      white: "#AAAAAA"
+      whiteB: "#FFFFFF"
+      yellow: "#AA5500"
+      yellowB: "#FFFF55"
+    - black: "black"
+      blackB: "black"
+      blue: "blue"
+      blueB: "blue"
+      cyan: "cyan"
+      cyanB: "cyan"
+      green: "green"
+      greenB: "green"
+      magenta: "magenta"
+      magentaB: "magenta"
+      name: "css"
+      red: "red"
+      redB: "red"
+      white: "white"
+      whiteB: "white"
+      yellow: "yellow"
+      yellowB: "yellow"
+    - black: "#2E3436"
+      blackB: "#2E3436"
+      blue: "#3465A4"
+      blueB: "#3465A4"
+      cyan: "#06989A"
+      cyanB: "#06989A"
+      defaultBackground: 0
+      defaultForeground: 7
+      green: "#4E9A06"
+      greenB: "#4E9A06"
+      magenta: "#75507B"
+      magentaB: "#75507B"
+      name: "gnome-terminal"
+      red: "#CC0000"
+      redB: "#CC0000"
+      white: "#D3D7CF"
+      whiteB: "#D3D7CF"
+      yellow: "#C4A000"
+      yellowB: "#C4A000"
+  artifactoryBuilder:
+    useCredentialsPlugin: false
+  bitbucketEndpointConfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        enableCache: false
+        manageHooks: false
+        repositoriesCacheDuration: 0
+        teamCacheDuration: 0
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  defaultFolderConfiguration:
+    healthMetrics:
+    - worstChildHealthMetric:
+        recursive: true
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookUrl: "http://jenkins.y-tree.uk/github-webhook/"
+  gitSCM:
+    createAccountBasedOnEmail: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  globalPluginConfiguration:
+    enabled: true
+    namespace: "jx"
+  ivyBuildTrigger:
+    extendedVersionMatching: false
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  mavenModuleSet:
+    localRepository: "default"
+  pollSCM:
+    pollingThreadCount: 10
+  sonarGlobalConfiguration:
+    buildWrapperEnabled: false
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
