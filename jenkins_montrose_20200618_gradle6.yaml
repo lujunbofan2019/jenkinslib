@@ -752,7 +752,7 @@ jenkins:
         volumes:
         - persistentVolumeClaim:
             claimName: "gradle-builder"
-            mountPath: "/opt/gradle/caches"
+            mountPath: "/root/.gradle/caches"
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
             mountPath: "/var/run/docker.sock"
