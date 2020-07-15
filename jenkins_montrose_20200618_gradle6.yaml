@@ -710,7 +710,7 @@ jenkins:
           workingDir: "/home/jenkins"
         - args: "cat"
           command: "/bin/sh -c"
-          image: "lujunbofan/jenkins-gradle6-xl:6.5"
+          image: "lujunbofan/jenkins-gradle6-xl:6.5.11"
           name: "gradle6"
           resourceLimitCpu: "2"
           resourceLimitMemory: "4Gi"
