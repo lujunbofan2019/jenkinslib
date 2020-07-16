@@ -742,7 +742,7 @@ jenkins:
             value: "/home/jenkins"
         - containerEnvVar:
             key: "_JAVA_OPTIONS"
-            value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap\
+            value: "-XX:+UnlockExperimentalVMOptions\
               \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
               \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
               \ -Xms512m -Xmx4g"
@@ -815,12 +815,6 @@ jenkins:
         - containerEnvVar:
             key: "XDG_CONFIG_HOME"
             value: "/home/jenkins"
-        - containerEnvVar:
-            key: "_JAVA_OPTIONS"
-            value: "-XX:+UnlockExperimentalVMOptions\
-              \ -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5\
-              \ -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90\
-              \ -Xms4g -Xmx8g"
         label: "jenkins-gradle6-xxl"
         name: "jenkins-gradle6-xxl"
         serviceAccount: "jenkins"
