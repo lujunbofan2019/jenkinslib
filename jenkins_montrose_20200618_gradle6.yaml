@@ -821,7 +821,7 @@ jenkins:
         slaveConnectTimeoutStr: "1000"
         volumes:
         - persistentVolumeClaim:
-            claimName: "gradle-builder"
+            claimName: "nodejs-builder" ######## reuse unmounted EFS pvc
             mountPath: "/root/.gradle/caches"
         - hostPathVolume:
             hostPath: "/var/run/docker.sock"
