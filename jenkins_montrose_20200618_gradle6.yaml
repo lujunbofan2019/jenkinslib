@@ -323,9 +323,9 @@ jenkins:
           name: "nodejs"
           privileged: true
           resourceLimitCpu: "4"
-          resourceLimitMemory: "12Gi"
-          resourceRequestCpu: "2"
-          resourceRequestMemory: "8Gi"
+          resourceLimitMemory: "4Gi"
+          resourceRequestCpu: "4"
+          resourceRequestMemory: "4Gi"
           ttyEnabled: true
           workingDir: "/home/jenkins"
         envVars:
