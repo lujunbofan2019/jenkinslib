@@ -322,10 +322,10 @@ jenkins:
           image: "gcr.io/jenkinsxio/builder-nodejs12x:2.0.1258-597"
           name: "nodejs"
           privileged: true
-          resourceLimitCpu: "2"
-          resourceLimitMemory: "8Gi"
-          resourceRequestCpu: "1"
-          resourceRequestMemory: "4Gi"
+          resourceLimitCpu: "4"
+          resourceLimitMemory: "12Gi"
+          resourceRequestCpu: "2"
+          resourceRequestMemory: "8Gi"
           ttyEnabled: true
           workingDir: "/home/jenkins"
         envVars:
@@ -790,7 +790,7 @@ jenkins:
           resourceLimitCpu: "4"
           resourceLimitMemory: "12Gi"
           resourceRequestCpu: "2"
-          resourceRequestMemory: "4Gi"
+          resourceRequestMemory: "8Gi"
           ttyEnabled: true
           workingDir: "/home/jenkins"
         envVars:
