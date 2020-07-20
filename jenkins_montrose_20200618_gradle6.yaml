@@ -788,7 +788,7 @@ jenkins:
           image: "lujunbofan/jenkins-gradle6-xl:6.5.11"
           name: "gradle6"
           resourceLimitCpu: "4"
-          resourceLimitMemory: "8Gi"
+          resourceLimitMemory: "12Gi"
           resourceRequestCpu: "2"
           resourceRequestMemory: "4Gi"
           ttyEnabled: true
