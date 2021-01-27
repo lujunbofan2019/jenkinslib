@@ -400,7 +400,7 @@ jenkins:
   - envVars:
       env:
       - key: "DOCKER_REGISTRY"
-        value: "10.96.60.208:5000"
+        value: "192.168.1.226:5000"
       - key: "TILLER_NAMESPACE"
         value: "kube-system"
   markupFormatter: "plainText"
