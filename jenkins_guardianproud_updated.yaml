@@ -401,7 +401,7 @@ jenkins:
       env:
       - key: "DOCKER_REGISTRY"
         value: "192.168.1.226:5000"
-      - key: "DOCKER_EXTRA_OPTS"
+      - key: "DOCKER_OPTS"
         value: "--insecure-registry 192.168.1.226:5000"
       - key: "TILLER_NAMESPACE"
         value: "kube-system"
